@@ -18,7 +18,14 @@ MyFirstGeneticAlgorithm - A genetic program which uses a list compass points to 
       "S", "W", "E", "S", "W", "E", "S", "S", "N", "E"], 39}}
     iex(2)> 
 
-Where the output is in the format: {iteration count, goal, {best genome in previous iteration, fitness of previous best}}
+Where the output is in the format: {iteration count to reach goal, goal, {best genome in previous iteration, fitness of previous best}}
+
+Default values found in config.exs:
+
+genome_length: 40,
+genome_values: ~w(N E S W),
+population_size: 10000,
+mutation_chance: 0.1
 
 
 
