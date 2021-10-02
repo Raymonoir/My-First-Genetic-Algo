@@ -7,6 +7,8 @@ defmodule Mfga do
   @mutation_chance Application.get_env(:mfga, :mutation_chance)
 
   def run_simulation do
+    start_time = System.monotonic_time(:second)
+
     goal = Generator.generate_random_sequence(@genome_size, @genome_values)
 
     initial_population =
@@ -14,7 +16,10 @@ defmodule Mfga do
 
     next = run_iteration(initial_population, goal)
 
-    run_all_interations(next, goal)
+    result = run_all_interations(next, goal)
+    end_time = System.monotonic_time(:second)
+
+    Tuple.append(result, end_time - start_time)
   end
 
   defp run_all_interations(next_pop, goal), do: run_all_interations(0, next_pop, goal)
