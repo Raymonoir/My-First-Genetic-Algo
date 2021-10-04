@@ -22,18 +22,19 @@ defmodule Mfga do
     Tuple.append(result, end_time - start_time)
   end
 
+  # Runs all iterations until maximum fitness
   defp run_all_interations(next_pop, goal), do: run_all_interations(0, next_pop, goal)
 
   defp run_all_interations(count, current_pop, goal) do
     new_next = run_iteration(current_pop, goal)
 
     max_fitness =
-      calculate_genome_fitnesses(new_next, goal)
+      Genetics.calculate_fitness(new_next, goal)
       |> get_max_fitness()
 
     if max_fitness == @genome_size do
       [fittest | _tail] =
-        calculate_genome_fitnesses(current_pop, goal)
+        Genetics.calculate_fitness(current_pop, goal)
         |> order_by_fitness()
 
       print_solutions(count, goal, fittest)
@@ -44,9 +45,10 @@ defmodule Mfga do
 
   defp print_solutions(count, goal, previous_best), do: {count, goal, previous_best}
 
+  # Runs a single iteration
   defp run_iteration(all_genomes, goal) do
     result =
-      calculate_genome_fitnesses(all_genomes, goal)
+      Genetics.calculate_fitness(all_genomes, goal)
       |> order_by_fitness()
       |> survival_of_fittest()
       |> remove_past_fitness()
@@ -59,13 +61,6 @@ defmodule Mfga do
     result ++
       children ++
       Generator.generate_genomes(round(@population_size / 4), @genome_size, @genome_values)
-  end
-
-  defp calculate_genome_fitnesses(all_genomes, goal) do
-    Genetics.calculate_fitness(all_genomes, goal)
-    |> Enum.map(fn {genome, fitness} ->
-      {genome, fitness}
-    end)
   end
 
   def get_max_fitness(all_genomes) do

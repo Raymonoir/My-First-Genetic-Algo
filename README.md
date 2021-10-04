@@ -31,3 +31,5 @@ The fitness is found by counting the number of correct values which are in the c
 Genome values are the possible values a gene in a genome can take.
 The population size is the number of genomes in a population.
 The mutation chance is the likelyhood that each child gene will randomly mutate.
+
+Run tests using 'mix test'

@@ -58,6 +58,8 @@ defmodule Mfga.GeneticsTest do
       assert get_mutation_average(0.75) > 0.74
     end
 
+    # Function to get average mutations
+    # Uses a genome of 100 genes and repeats 1000 times
     defp get_mutation_average(severity) do
       long_list = for i <- 1..100, do: i
 
