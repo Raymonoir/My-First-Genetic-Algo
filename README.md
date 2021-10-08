@@ -39,7 +39,10 @@ I created this algorithm before really knowing much about genetic algorithms or 
 
 After a few more lectures I can now see many improvements which I could make, such as:
   - I now know I should call an array of singular genes, ie ["N", "S", "W"] a chromosone.
+
   -My crossover function does not use randomness to produce the offspring, instead of using a random crossover point I always use the middle of the genome. On top of this, my function only produces one offspring instead of two.
+  
   - I do not use fitness-proportionate selction, meaning my algorithm does not balance exploitation and exploration, this is due to the fact I simply take the top 50% of the fitness values when performing 'survival of the fittest' instead of giving all values a chance.
+  
   - There was no probability to apply the crossover function.
 
