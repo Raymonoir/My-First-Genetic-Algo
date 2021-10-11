@@ -19,8 +19,8 @@ defmodule Mfga.Genetics do
   end
 
   # Adds fitness to chromosome in the form of {chromosome, fitness}
-  def add_fitness(all_chromosomes, goal) do
-    Enum.map(all_chromosomes, fn chromosome ->
+  def add_fitness(population, goal) do
+    Enum.map(population, fn chromosome ->
       {_total, likeness} = calculate_chromosome_fitness(chromosome, goal)
       {chromosome, likeness}
     end)

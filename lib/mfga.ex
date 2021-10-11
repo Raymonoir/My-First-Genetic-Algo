@@ -46,9 +46,9 @@ defmodule Mfga do
   defp print_solutions(count, goal, previous_best), do: {count, goal, previous_best}
 
   # Runs a single iteration
-  defp run_iteration(all_chromosomes, goal) do
+  defp run_iteration(population, goal) do
     result =
-      Genetics.add_fitness(all_chromosomes, goal)
+      Genetics.add_fitness(population, goal)
       |> sort_by_fitness()
       |> survival_of_fittest()
       |> remove_past_fitness()
@@ -67,27 +67,27 @@ defmodule Mfga do
       )
   end
 
-  def get_max_fitness(all_chromosomes) do
-    Enum.max(Enum.map(all_chromosomes, fn {_chromosome, fitness} -> fitness end))
+  def get_max_fitness(population) do
+    Enum.max(Enum.map(population, fn {_chromosome, fitness} -> fitness end))
   end
 
   def remove_past_fitness(surviving_chromosomes) do
     Enum.map(surviving_chromosomes, fn {chromosome, _fitness} -> chromosome end)
   end
 
-  defp survival_of_fittest(all_chromosomes) do
-    half = round(length(all_chromosomes) / 2)
-    Enum.take(all_chromosomes, half)
+  defp survival_of_fittest(population) do
+    half = round(length(population) / 2)
+    Enum.take(population, half)
   end
 
-  def sort_by_fitness(all_chromosomes) do
-    Enum.sort(all_chromosomes, fn {_chromosome1, fitness1}, {_chromosome2, fitness2} ->
+  def sort_by_fitness(population) do
+    Enum.sort(population, fn {_chromosome1, fitness1}, {_chromosome2, fitness2} ->
       fitness1 >= fitness2
     end)
   end
 
-  defp perform_crossover(all_chromosomes) do
-    Enum.chunk_every(all_chromosomes, 2)
+  defp perform_crossover(population) do
+    Enum.chunk_every(population, 2)
     |> Enum.map(fn [chromosome1, chromosome2] ->
       Genetics.crossover(chromosome1, chromosome2)
     end)
