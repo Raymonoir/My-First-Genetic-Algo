@@ -16,20 +16,20 @@ MyFirstGeneticAlgorithm - A genetic program which uses a list compass points to 
        "W", "E", "W", "N", "W", "S", "S", "N", "W", "S"], 39}, 17}
     iex(2)> 
 
-Where the output is in the format: {iteration count to reach goal, goal, {best genome in previous iteration, fitness of previous best}, seconds_elapsed}
+Where the output is in the format: {iteration count to reach goal, goal, {best chromosome in previous iteration, fitness of previous best}, seconds_elapsed}
 
 # Configuration
 Default values found in config.exs:
 
-genome_length: 40,
-genome_values: ~w(N E S W),
+chromosome_length: 40,
+chromosome_values: ~w(N E S W),
 population_size: 10000,
 mutation_chance: 0.1
 
 
-The fitness is found by counting the number of correct values which are in the correct positions when compared to the goal genome.
-Genome values are the possible values a gene in a genome can take.
-The population size is the number of genomes in a population.
+The fitness is found by counting the number of correct values which are in the correct positions when compared to the goal chromosome.
+chromosome values are the possible values a gene in a chromosome can take.
+The population size is the number of chromosomes in a population.
 The mutation chance is the likelyhood that each child gene will randomly mutate.
 
 Run tests using 'mix test'
@@ -40,7 +40,7 @@ I created this algorithm before really knowing much about genetic algorithms or 
 After a few more lectures I can now see many improvements which I could make, such as:
   - I now know I should call an array of singular genes, ie ["N", "S", "W"] a chromosome.
 
-  - My crossover function does not use randomness to produce the offspring, instead of using a random crossover point I always use the middle of the genome. On top of this, my function only produces one offspring instead of two.
+  - My crossover function does not use randomness to produce the offspring, instead of using a random crossover point I always use the middle of the chromosome. On top of this, my function only produces one offspring instead of two.
   
   - I do not use fitness-proportionate selction, meaning my algorithm does not balance exploitation and exploration, this is due to the fact I simply take the top 50% of the fitness values when performing 'survival of the fittest' instead of giving all values a chance.
   
