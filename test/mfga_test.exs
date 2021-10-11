@@ -13,7 +13,7 @@ defmodule MfgaTest do
 
   describe "order_by_fitness/1" do
     test "orders chromosomes by given fitnesses" do
-      assert Mfga.order_by_fitness([
+      assert Mfga.sort_by_fitness([
                {["chromosome1"], 2},
                {["chromosome2"], 4},
                {["chromosome3"], 3},

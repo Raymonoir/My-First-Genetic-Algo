@@ -14,16 +14,16 @@ defmodule Mfga.GeneticsTest do
     end
   end
 
-  describe "calculate_fitness/2" do
+  describe "add_fitness/2" do
     test "calculates correct fitness value for multiple chromosomes" do
-      assert Genetics.calculate_fitness([[1, 2, 3, 4], [5, 6, 7, 8]], [1, 2, 7, 8]) == [
+      assert Genetics.add_fitness([[1, 2, 3, 4], [5, 6, 7, 8]], [1, 2, 7, 8]) == [
                {[1, 2, 3, 4], 2},
                {[5, 6, 7, 8], 2}
              ]
 
       list = ["N", "E", "S", "W"]
 
-      assert Genetics.calculate_fitness(
+      assert Genetics.add_fitness(
                [list, list, list],
                list
              ) == [
@@ -65,13 +65,13 @@ defmodule Mfga.GeneticsTest do
 
       Enum.sum(
         for _ <- 1..1000 do
-          {total, likeness} =
-            Genetics.calculate_chromosome_likeness(
+          {total, fitness} =
+            Genetics.calculate_chromosome_fitness(
               Genetics.mutate(long_list, severity, ~w(N)),
               long_list
             )
 
-          (total - likeness) / total
+          (total - fitness) / total
         end
       ) / 1000
     end
