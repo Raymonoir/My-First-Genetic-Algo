@@ -29,13 +29,13 @@ defmodule Mfga do
     new_next = run_iteration(current_pop, goal)
 
     max_fitness =
-      Genetics.calculate_fitness(new_next, goal)
+      Genetics.add_fitness(new_next, goal)
       |> get_max_fitness()
 
     if max_fitness == @genome_size do
       [fittest | _tail] =
-        Genetics.calculate_fitness(current_pop, goal)
-        |> order_by_fitness()
+        Genetics.add_fitness(current_pop, goal)
+        |> sort_by_fitness()
 
       print_solutions(count, goal, fittest)
     else
@@ -48,8 +48,8 @@ defmodule Mfga do
   # Runs a single iteration
   defp run_iteration(all_genomes, goal) do
     result =
-      Genetics.calculate_fitness(all_genomes, goal)
-      |> order_by_fitness()
+      Genetics.add_fitness(all_genomes, goal)
+      |> sort_by_fitness()
       |> survival_of_fittest()
       |> remove_past_fitness()
 
@@ -76,7 +76,7 @@ defmodule Mfga do
     Enum.take(all_genomes, half)
   end
 
-  def order_by_fitness(all_genomes) do
+  def sort_by_fitness(all_genomes) do
     Enum.sort(all_genomes, fn {_genome1, fitness1}, {_genome2, fitness2} ->
       fitness1 >= fitness2
     end)

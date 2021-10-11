@@ -38,7 +38,7 @@ Run tests using 'mix test'
 I created this algorithm before really knowing much about genetic algorithms or how they should work, I mainly used a [flow diagram](GA-flowdiagram.png) provided in my second lecture of my Computational Intellignce in Business, Economics and Finance module and I am quite happy with the results I achieved considering this.
 
 After a few more lectures I can now see many improvements which I could make, such as:
-  - I now know I should call an array of singular genes, ie ["N", "S", "W"] a chromosone.
+  - I now know I should call an array of singular genes, ie ["N", "S", "W"] a chromosome.
 
   - My crossover function does not use randomness to produce the offspring, instead of using a random crossover point I always use the middle of the genome. On top of this, my function only produces one offspring instead of two.
   

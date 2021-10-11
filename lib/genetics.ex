@@ -18,16 +18,17 @@ defmodule Mfga.Genetics do
     end)
   end
 
-  def calculate_fitness(all_genomes, goal) do
+  # Adds fitness to genome in the form of {genome, fitness}
+  def add_fitness(all_genomes, goal) do
     Enum.map(all_genomes, fn genome ->
-      {_total, likeness} = calculate_genome_likeness(genome, goal)
+      {_total, likeness} = calculate_genome_fitness(genome, goal)
       {genome, likeness}
     end)
   end
 
-  # Uses a reduce function with a tuple as the accumulator to keep track
-  # of both the total counted and the likeness between two genomes
-  def calculate_genome_likeness(genome1, genome2) do
+  # Calculates genome fitness using a reduce function with a tuple as the accumulator to keep track
+  # of both the total counted and the fitness between two genomes
+  def calculate_genome_fitness(genome1, genome2) do
     Enum.reduce(genome1, {0, 0}, fn key, acc ->
       if key == Enum.at(genome2, elem(acc, 0)) do
         {elem(acc, 0) + 1, elem(acc, 1) + 1}
