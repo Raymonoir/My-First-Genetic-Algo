@@ -21,19 +21,19 @@ defmodule Mfga.Genetics do
   # Adds fitness to chromosome in the form of {chromosome, fitness}
   def add_fitness(population, goal) do
     Enum.map(population, fn chromosome ->
-      {_total, likeness} = calculate_chromosome_fitness(chromosome, goal)
-      {chromosome, likeness}
+      {_total, fitness} = calculate_chromosome_fitness(chromosome, goal)
+      {chromosome, fitness}
     end)
   end
 
   # Calculates chromosome fitness using a reduce function with a tuple as the accumulator to keep track
   # of both the total counted and the fitness between two chromosomes
   def calculate_chromosome_fitness(chromosome1, chromosome2) do
-    Enum.reduce(chromosome1, {0, 0}, fn key, acc ->
-      if key == Enum.at(chromosome2, elem(acc, 0)) do
-        {elem(acc, 0) + 1, elem(acc, 1) + 1}
+    Enum.reduce(chromosome1, {0, 0}, fn gene, {total, fitness} ->
+      if gene == Enum.at(chromosome2, total) do
+        {total + 1, fitness + 1}
       else
-        {elem(acc, 0) + 1, elem(acc, 1)}
+        {total + 1, fitness}
       end
     end)
   end
