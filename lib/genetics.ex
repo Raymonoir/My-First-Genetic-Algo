@@ -1,11 +1,17 @@
 defmodule Mfga.Genetics do
   def crossover(chromosome1, chromosome2) do
-    size = round(length(chromosome1) / 2)
+    crossover_point = get_crossover_point(length(chromosome1))
 
-    half1 = Enum.take(chromosome1, size)
-    half2 = Enum.take(chromosome2, -size)
+    {chromosome1_half1, chromosome1_half2} = Enum.split(chromosome1, crossover_point)
+    {chromosome2_half1, chromosome2_half2} = Enum.split(chromosome2, crossover_point)
 
-    half1 ++ half2
+    [chromosome1_half1 ++ chromosome2_half2, chromosome2_half1 ++ chromosome1_half2]
+  end
+
+  #     1                            length - 1
+  # | N | W | S | S | W | E | N | W | S | E |
+  defp get_crossover_point(length) do
+    Enum.random(1..(length - 1))
   end
 
   def mutate(chromosome, severity, values) do

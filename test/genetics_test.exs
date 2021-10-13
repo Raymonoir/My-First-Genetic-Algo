@@ -7,10 +7,12 @@ defmodule Mfga.GeneticsTest do
       list1 = for i <- 1..10, do: i
       list2 = for j <- 11..20, do: j
 
+      :rand.seed(:exsss, {105, 105, 105})
+
       assert Genetics.crossover(
                list1,
                list2
-             ) == [1, 2, 3, 4, 5, 16, 17, 18, 19, 20]
+             ) == [[1, 2, 3, 4, 15, 16, 17, 18, 19, 20], [11, 12, 13, 14, 5, 6, 7, 8, 9, 10]]
     end
   end
 
