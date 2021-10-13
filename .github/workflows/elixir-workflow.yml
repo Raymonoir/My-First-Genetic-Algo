@@ -3,7 +3,7 @@ on: [pull_request, push]
 jobs:
   run-elixir-tests:
     name: run-elixir-tests
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     steps:
       - name: run-tests
         uses: mileschou/elixir-action@master
