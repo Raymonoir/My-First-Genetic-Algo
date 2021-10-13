@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run-tests
+        uses: actions/checkout@v2
         uses: mileschou/elixir-action@master
         with:
           args: mix test
