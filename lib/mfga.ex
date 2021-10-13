@@ -6,6 +6,7 @@ defmodule Mfga do
   @population_size Application.get_env(:mfga, :population_size)
   @mutation_chance Application.get_env(:mfga, :mutation_chance)
 
+  # Starts simulation
   def run_simulation do
     start_time = System.monotonic_time(:second)
 
