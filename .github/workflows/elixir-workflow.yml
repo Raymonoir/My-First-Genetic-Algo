@@ -1,0 +1,10 @@
+name: elixir-workflow
+on: [pull_request]
+jobs:
+  run-elixir-tests:
+    runs-on: macos-11
+    steps:
+      - name: run-tests
+      uses: mileschou/elixir-action@master
+      with:
+        args: mix test
