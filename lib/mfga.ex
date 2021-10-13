@@ -46,7 +46,7 @@ defmodule Mfga do
 
   defp print_solutions(count, goal, previous_best), do: {count, goal, previous_best}
 
-  # Runs a single iteration
+  # Runs a single iteration and generates new population
   defp run_iteration(population, goal) do
     result =
       Genetics.add_fitness(population, goal)
