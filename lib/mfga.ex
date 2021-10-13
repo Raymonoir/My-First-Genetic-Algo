@@ -1,18 +1,18 @@
 defmodule Mfga do
   alias Mfga.{Generator, Genetics}
 
-  @genome_size Application.get_env(:mfga, :genome_length)
-  @genome_values Application.get_env(:mfga, :genome_values)
+  @chromosome_size Application.get_env(:mfga, :chromosome_length)
+  @chromosome_values Application.get_env(:mfga, :chromosome_values)
   @population_size Application.get_env(:mfga, :population_size)
   @mutation_chance Application.get_env(:mfga, :mutation_chance)
 
   def run_simulation do
     start_time = System.monotonic_time(:second)
 
-    goal = Generator.generate_random_sequence(@genome_size, @genome_values)
+    goal = Generator.generate_random_sequence(@chromosome_size, @chromosome_values)
 
     initial_population =
-      Generator.generate_genomes(@population_size, @genome_size, @genome_values)
+      Generator.generate_chromosomes(@population_size, @chromosome_size, @chromosome_values)
 
     next = run_iteration(initial_population, goal)
 
@@ -29,13 +29,13 @@ defmodule Mfga do
     new_next = run_iteration(current_pop, goal)
 
     max_fitness =
-      Genetics.calculate_fitness(new_next, goal)
+      Genetics.add_fitness(new_next, goal)
       |> get_max_fitness()
 
-    if max_fitness == @genome_size do
+    if max_fitness == @chromosome_size do
       [fittest | _tail] =
-        Genetics.calculate_fitness(current_pop, goal)
-        |> order_by_fitness()
+        Genetics.add_fitness(current_pop, goal)
+        |> sort_by_fitness()
 
       print_solutions(count, goal, fittest)
     else
@@ -46,10 +46,10 @@ defmodule Mfga do
   defp print_solutions(count, goal, previous_best), do: {count, goal, previous_best}
 
   # Runs a single iteration
-  defp run_iteration(all_genomes, goal) do
+  defp run_iteration(population, goal) do
     result =
-      Genetics.calculate_fitness(all_genomes, goal)
-      |> order_by_fitness()
+      Genetics.add_fitness(population, goal)
+      |> sort_by_fitness()
       |> survival_of_fittest()
       |> remove_past_fitness()
 
@@ -60,38 +60,42 @@ defmodule Mfga do
 
     result ++
       children ++
-      Generator.generate_genomes(round(@population_size / 4), @genome_size, @genome_values)
+      Generator.generate_chromosomes(
+        round(@population_size / 4),
+        @chromosome_size,
+        @chromosome_values
+      )
   end
 
-  def get_max_fitness(all_genomes) do
-    Enum.max(Enum.map(all_genomes, fn {_genome, fitness} -> fitness end))
+  def get_max_fitness(population) do
+    Enum.max(Enum.map(population, fn {_chromosome, fitness} -> fitness end))
   end
 
-  def remove_past_fitness(surviving_genomes) do
-    Enum.map(surviving_genomes, fn {genome, _fitness} -> genome end)
+  def remove_past_fitness(surviving_chromosomes) do
+    Enum.map(surviving_chromosomes, fn {chromosome, _fitness} -> chromosome end)
   end
 
-  defp survival_of_fittest(all_genomes) do
-    half = round(length(all_genomes) / 2)
-    Enum.take(all_genomes, half)
+  defp survival_of_fittest(population) do
+    half = round(length(population) / 2)
+    Enum.take(population, half)
   end
 
-  def order_by_fitness(all_genomes) do
-    Enum.sort(all_genomes, fn {_genome1, fitness1}, {_genome2, fitness2} ->
+  def sort_by_fitness(population) do
+    Enum.sort(population, fn {_chromosome1, fitness1}, {_chromosome2, fitness2} ->
       fitness1 >= fitness2
     end)
   end
 
-  defp perform_crossover(all_genomes) do
-    Enum.chunk_every(all_genomes, 2)
-    |> Enum.map(fn [genome1, genome2] ->
-      Genetics.crossover(genome1, genome2)
+  defp perform_crossover(population) do
+    Enum.chunk_every(population, 2)
+    |> Enum.map(fn [chromosome1, chromosome2] ->
+      Genetics.crossover(chromosome1, chromosome2)
     end)
   end
 
-  defp perform_mutations(children_genomes) do
-    Enum.map(children_genomes, fn child ->
-      Genetics.mutate(child, @mutation_chance, @genome_values)
+  defp perform_mutations(children_chromosomes) do
+    Enum.map(children_chromosomes, fn child ->
+      Genetics.mutate(child, @mutation_chance, @chromosome_values)
     end)
   end
 end

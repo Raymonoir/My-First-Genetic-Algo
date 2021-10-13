@@ -7,23 +7,25 @@ defmodule Mfga.GeneticsTest do
       list1 = for i <- 1..10, do: i
       list2 = for j <- 11..20, do: j
 
+      :rand.seed(:exsss, {105, 105, 105})
+
       assert Genetics.crossover(
                list1,
                list2
-             ) == [1, 2, 3, 4, 5, 16, 17, 18, 19, 21]
+             ) == [[1, 2, 3, 4, 15, 16, 17, 18, 19, 20], [11, 12, 13, 14, 5, 6, 7, 8, 9, 10]]
     end
   end
 
-  describe "calculate_fitness/2" do
-    test "calculates correct fitness value for multiple genomes" do
-      assert Genetics.calculate_fitness([[1, 2, 3, 4], [5, 6, 7, 8]], [1, 2, 7, 8]) == [
+  describe "add_fitness/2" do
+    test "calculates correct fitness value for multiple chromosomes" do
+      assert Genetics.add_fitness([[1, 2, 3, 4], [5, 6, 7, 8]], [1, 2, 7, 8]) == [
                {[1, 2, 3, 4], 2},
                {[5, 6, 7, 8], 2}
              ]
 
       list = ["N", "E", "S", "W"]
 
-      assert Genetics.calculate_fitness(
+      assert Genetics.add_fitness(
                [list, list, list],
                list
              ) == [
@@ -59,19 +61,19 @@ defmodule Mfga.GeneticsTest do
     end
 
     # Function to get average mutations
-    # Uses a genome of 100 genes and repeats 1000 times
+    # Uses a chromosome of 100 genes and repeats 1000 times
     defp get_mutation_average(severity) do
       long_list = for i <- 1..100, do: i
 
       Enum.sum(
         for _ <- 1..1000 do
-          {total, likeness} =
-            Genetics.calculate_genome_likeness(
+          {total, fitness} =
+            Genetics.calculate_chromosome_fitness(
               Genetics.mutate(long_list, severity, ~w(N)),
               long_list
             )
 
-          (total - likeness) / total
+          (total - fitness) / total
         end
       ) / 1000
     end

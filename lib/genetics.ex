@@ -1,15 +1,21 @@
 defmodule Mfga.Genetics do
-  def crossover(genome1, genome2) do
-    size = round(length(genome1) / 2)
+  def crossover(chromosome1, chromosome2) do
+    crossover_point = get_crossover_point(length(chromosome1))
 
-    half1 = Enum.take(genome1, size)
-    half2 = Enum.take(genome2, -size)
+    {chromosome1_half1, chromosome1_half2} = Enum.split(chromosome1, crossover_point)
+    {chromosome2_half1, chromosome2_half2} = Enum.split(chromosome2, crossover_point)
 
-    half1 ++ half2
+    [chromosome1_half1 ++ chromosome2_half2, chromosome2_half1 ++ chromosome1_half2]
   end
 
-  def mutate(genome, severity, values) do
-    Enum.map(genome, fn key ->
+  #     1                            length - 1
+  # | N | W | S | S | W | E | N | W | S | E |
+  defp get_crossover_point(length) do
+    Enum.random(1..(length - 1))
+  end
+
+  def mutate(chromosome, severity, values) do
+    Enum.map(chromosome, fn key ->
       if Enum.random(1..100) <= severity * 100 do
         Enum.random(values)
       else
@@ -18,21 +24,22 @@ defmodule Mfga.Genetics do
     end)
   end
 
-  def calculate_fitness(all_genomes, goal) do
-    Enum.map(all_genomes, fn genome ->
-      {_total, likeness} = calculate_genome_likeness(genome, goal)
-      {genome, likeness}
+  # Adds fitness to chromosome in the form of {chromosome, fitness}
+  def add_fitness(population, goal) do
+    Enum.map(population, fn chromosome ->
+      {_total, fitness} = calculate_chromosome_fitness(chromosome, goal)
+      {chromosome, fitness}
     end)
   end
 
-  # Uses a reduce function with a tuple as the accumulator to keep track
-  # of both the total counted and the likeness between two genomes
-  def calculate_genome_likeness(genome1, genome2) do
-    Enum.reduce(genome1, {0, 0}, fn key, acc ->
-      if key == Enum.at(genome2, elem(acc, 0)) do
-        {elem(acc, 0) + 1, elem(acc, 1) + 1}
+  # Calculates chromosome fitness using a reduce function with a tuple as the accumulator to keep track
+  # of both the total counted and the fitness between two chromosomes
+  def calculate_chromosome_fitness(chromosome1, chromosome2) do
+    Enum.reduce(chromosome1, {0, 0}, fn gene, {total, fitness} ->
+      if gene == Enum.at(chromosome2, total) do
+        {total + 1, fitness + 1}
       else
-        {elem(acc, 0) + 1, elem(acc, 1)}
+        {total + 1, fitness}
       end
     end)
   end

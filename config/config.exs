@@ -1,8 +1,8 @@
 import Config
 
 config :mfga,
-  genome_length: 40,
-  genome_values: ~w(N E S W),
+  chromosome_length: 40,
+  chromosome_values: ~w(N E S W),
   population_size: 10000,
   mutation_chance: 0.1
 
