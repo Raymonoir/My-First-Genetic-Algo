@@ -32,6 +32,17 @@ defmodule Mfga.Genetics do
     end)
   end
 
+  def tournament_selection(population, k) do
+    for _ <- 1..k do
+      Enum.random(population)
+    end
+    |> get_max_fitness()
+  end
+
+  def get_max_fitness(population) do
+    Enum.max(Enum.map(population, fn {_chromosome, fitness} -> fitness end))
+  end
+
   # Calculates chromosome fitness using a reduce function with a tuple as the accumulator to keep track
   # of both the total counted and the fitness between two chromosomes
   def calculate_chromosome_fitness(chromosome1, chromosome2) do
