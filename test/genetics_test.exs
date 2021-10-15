@@ -2,6 +2,37 @@ defmodule Mfga.GeneticsTest do
   use ExUnit.Case
   alias Mfga.Genetics
 
+  describe "tournament_selection/2" do
+    test "tournament selection with k=1 is random" do
+      :rand.seed(:exsss, {105, 105, 105})
+
+      assert {[1, 2, 3], 1} ==
+               Genetics.tournament_selection([{[1, 2, 3], 1}, {[4, 5, 6], 2}, {[7, 8, 9], 3}], 1)
+    end
+
+    test "tournment selection with k=pop_size is elitism" do
+      # We need this because we select k random individuals,
+      # there is no guarantee the same individual is chosen twice
+      :rand.seed(:exsss, {105, 105, 105})
+
+      assert {[7, 8, 9], 3} ==
+               Genetics.tournament_selection(
+                 [{[1, 2, 3], 1}, {[4, 5, 6], 2}, {[7, 8, 9], 3}],
+                 3
+               )
+    end
+  end
+
+  describe "get_max_fitness/1" do
+    test "returns the chromosome with the maximum fitness" do
+      assert Genetics.get_max_fitness([
+               {["chromosome1"], 0},
+               {["chromosome2"], 4},
+               {["chromosome3"], 6}
+             ]) == 6
+    end
+  end
+
   describe "crossover/3" do
     test "crossover function joins two halves of two geneomes" do
       list1 = for i <- 1..10, do: i

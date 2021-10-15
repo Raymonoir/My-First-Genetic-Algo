@@ -33,14 +33,19 @@ defmodule Mfga.Genetics do
   end
 
   def tournament_selection(population, k) do
-    for _ <- 1..k do
-      Enum.random(population)
-    end
-    |> get_max_fitness()
+    Enum.take_random(population, k)
+    |> get_max_fitness_chromosone()
+  end
+
+  def get_max_fitness_chromosone(population) do
+    Enum.max_by(population, fn {_chromosome, fitness} -> fitness end)
   end
 
   def get_max_fitness(population) do
-    Enum.max(Enum.map(population, fn {_chromosome, fitness} -> fitness end))
+    IO.inspect(length(population))
+
+    {_chromosome, fitness} = get_max_fitness_chromosone(population)
+    fitness
   end
 
   # Calculates chromosome fitness using a reduce function with a tuple as the accumulator to keep track

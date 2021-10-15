@@ -1,16 +1,6 @@
 defmodule MfgaTest do
   use ExUnit.Case
 
-  describe "get_max_fitness/1" do
-    test "returns the chromosome with the maximum fitness" do
-      assert Mfga.get_max_fitness([
-               {["chromosome1"], 0},
-               {["chromosome2"], 4},
-               {["chromosome3"], 6}
-             ]) == 6
-    end
-  end
-
   describe "order_by_fitness/1" do
     test "orders chromosomes by given fitnesses" do
       assert Mfga.sort_by_fitness([
