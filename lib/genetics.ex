@@ -34,6 +34,7 @@ defmodule Mfga.Genetics do
 
   def tournament_selection(population, k) do
     Enum.take_random(population, k)
+    |> IO.inspect()
     |> get_max_fitness_chromosone()
   end
 

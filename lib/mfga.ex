@@ -8,7 +8,7 @@ defmodule Mfga do
   @crossover_chance Application.get_env(:mfga, :crossover_chance)
   @tournament_k ceil(:math.sqrt(@population_size))
 
-  # Starts simulation
+  # Starts simulation and runs all iterations untill fitness is maximised
   def run_simulation do
     start_time = System.monotonic_time(:millisecond)
 
@@ -61,10 +61,6 @@ defmodule Mfga do
 
   defp get_chunked_crossover_chance(probability) do
     probability * 2 * 100
-  end
-
-  def remove_past_fitness(surviving_chromosomes) do
-    Enum.map(surviving_chromosomes, fn {chromosome, _fitness} -> chromosome end)
   end
 
   def selected?(likelihood) do
