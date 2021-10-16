@@ -6,7 +6,7 @@ defmodule Mfga.GeneticsTest do
     test "tournament selection with k=1 is random" do
       :rand.seed(:exsss, {105, 105, 105})
 
-      assert {[1, 2, 3], 1} ==
+      assert {[4, 5, 6], 2} ==
                Genetics.tournament_selection([{[1, 2, 3], 1}, {[4, 5, 6], 2}, {[7, 8, 9], 3}], 1)
     end
 

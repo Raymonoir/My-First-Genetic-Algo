@@ -15,11 +15,11 @@ defmodule Mfga.Genetics do
   end
 
   def mutate(chromosome, severity, values) do
-    Enum.map(chromosome, fn key ->
+    Enum.map(chromosome, fn gene ->
       if Enum.random(1..100) <= severity * 100 do
         Enum.random(values)
       else
-        key
+        gene
       end
     end)
   end
@@ -42,10 +42,7 @@ defmodule Mfga.Genetics do
   end
 
   def get_max_fitness(population) do
-    IO.inspect(length(population))
-
-    {_chromosome, fitness} = get_max_fitness_chromosone(population)
-    fitness
+    elem(get_max_fitness_chromosone(population), 1)
   end
 
   # Calculates chromosome fitness using a reduce function with a tuple as the accumulator to keep track
